@@ -11,7 +11,7 @@ public class App {
 		HttpClientDownloader  dower = new HttpClientDownloader();
 		
 		
-     Spider.create(new HelloSpider()).addUrl("http://www.secbug.org").thread(5).run();
+     Spider.create(new HelloSpider()).addUrl("http://www.secbug.org/").thread(5).run();
 	
 
 	}
