@@ -1,13 +1,6 @@
 package org.secbug.main;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
@@ -15,35 +8,28 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class HelloSpider implements PageProcessor {
 
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(1000).setTimeOut(10000);
+    private Site site = Site.me().setRetryTimes(3).setSleepTime(1000).
+    		setTimeOut(10000).addHeader("Content-Encoding", "gzip").
+    		addHeader("Connection", "keep-alive").
+    		addHeader("Referer", "https://github.com/Ms0x0").
+    		addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36");
 
 	
+ 
+    
+    
 	@Override
 	public void process(Page page) {
 	
-		System.out.println(page.getRequest().getHeaders());
+		System.out.println(page.getRequest());
 		List<String> urls = 	page.getHtml().links().all();
 		
 		
-		for(String url : urls)
-		{
+		for(String url : urls){
 			
-			
-			
-			if(url.startsWith("http://www.moonsos.com"))
+			if(url.startsWith("http://www.secbug.org"))
 			{
-				try {
-					String data = page.getRequest().getMethod() + ":" + page.getRequest().getUrl() 
-							+ " : "+ page.getRequest().getCookies()+"\r\n" ;
-					
-					
-					new FileOutputStream(new File("m.log"),true).write(data.getBytes());;
-					
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
 				page.addTargetRequest(url);
 			}
 		}
